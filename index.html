@@ -1,44 +1,418 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TRIGGER NALIAN - Home</title>
-    <link rel="stylesheet" href="global.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BASH OILS - Professional Fuel System</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --pms: #e74c3c; /* Red for Petrol/PMS */
+        --ago: #2c3e50; /* Dark/Black for Diesel/AGO */
+        --theme: #d35400; /* Bash Oils Orange */
+        --bg: #f4f7f6;
+        --glass: #ffffff;
+        --shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+
+    body { font-family: 'Poppins', sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
+    .container { max-width: 1100px; margin: 0 auto; padding-bottom: 80px; }
+
+    /* Header */
+    .header { background: var(--glass); padding: 20px; border-radius: 12px; box-shadow: var(--shadow); display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-left: 5px solid var(--theme); }
+    .brand h1 { margin: 0; font-size: 22px; color: var(--ago); letter-spacing: 1px; }
+    .brand p { margin: 0; font-size: 12px; color: #7f8c8d; }
+
+    /* Card System */
+    .card { background: var(--glass); padding: 25px; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 20px; }
+    .section-title { font-size: 16px; font-weight: 700; color: var(--theme); margin-bottom: 15px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
+
+    /* Grid Layouts */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+
+    /* Inputs */
+    .input-grp { margin-bottom: 10px; }
+    label { display: block; font-size: 11px; font-weight: 600; color: #7f8c8d; margin-bottom: 5px; text-transform: uppercase; }
+    input, select { width: 100%; padding: 10px; border: 1px solid #e0e0e0; border-radius: 6px; font-family: inherit; font-size: 14px; box-sizing: border-box; transition: 0.2s; }
+    input:focus { border-color: var(--theme); outline: none; }
+    input:disabled { background: #f9f9f9; color: #333; font-weight: 600; }
+    
+    /* Pump Visuals */
+    .pump-box { border: 1px solid #eee; border-radius: 8px; padding: 15px; position: relative; }
+    .pump-header { background: #eee; padding: 5px 10px; border-radius: 4px; font-weight: bold; margin-bottom: 10px; text-align: center; }
+    .nozzle-row { display: grid; grid-template-columns: 0.5fr 1fr 1fr 0.8fr 1fr; gap: 10px; align-items: center; margin-bottom: 8px; font-size: 13px; }
+    .pms-label { color: var(--pms); font-weight: bold; }
+    .ago-label { color: var(--ago); font-weight: bold; }
+
+    /* Financial Tables */
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { text-align: left; color: #7f8c8d; padding: 8px; border-bottom: 2px solid #eee; }
+    td { padding: 8px; border-bottom: 1px solid #eee; }
+    
+    /* Action Buttons */
+    .btn { padding: 10px 15px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; transition: 0.2s; }
+    .btn-blue { background: #3498db; color: white; }
+    .btn-green { background: #27ae60; color: white; }
+    .btn-red { background: #c0392b; color: white; }
+    .btn-add { background: var(--ago); color: white; width: 100%; margin-top: 5px; }
+    
+    /* Reports Section */
+    .report-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .report-btn { padding: 15px; border: 2px dashed #ccc; background: none; cursor: pointer; border-radius: 8px; text-align: center; color: #555; transition: 0.2s; }
+    .report-btn:hover { border-color: var(--theme); color: var(--theme); background: #fff5e6; }
+    .report-icon { font-size: 24px; display: block; margin-bottom: 5px; }
+
+    /* Summary Dashboard */
+    .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; background: var(--ago); color: white; padding: 20px; border-radius: 12px; }
+    .dash-item { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 8px 0; font-size: 14px; }
+    .dash-total { font-size: 24px; font-weight: bold; color: var(--theme); text-align: right; margin-top: 15px; }
+
+    /* Status Tags */
+    .status-ok { color: #27ae60; font-weight: bold; }
+    .status-short { color: #c0392b; font-weight: bold; }
+    .status-over { color: #f39c12; font-weight: bold; }
+
+    @media print {
+        body { background: white; padding: 0; }
+        .no-print, button { display: none !important; }
+        .card { box-shadow: none; border: 1px solid #000; break-inside: avoid; }
+        .dashboard { background: white; color: black; border: 2px solid black; }
+        .dash-item { border-bottom: 1px solid #ccc; }
+        input { border: none; padding: 0; background: transparent; font-weight: bold; }
+    }
+</style>
 </head>
 <body>
 
-    <header class="header">
-        <nav class="navbar">
-            <div class="logo"><a href="index.html">TRIGGER NALIAN</a></div>
-            <ul class="nav-links">
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="shop.html">Shop</a></li>
-                <li><a href="services.html">Services</a></li>
-                <li><a href="support.html">Support</a></li>
-                <li><a href="about.html">About Us</a></li>
-                <li><a href="login-signup.html">Login/Settings</a></li> 
-                <li class="nav-item logout" style="display:none;"><a href="#">Logout</a></li>
-            </ul>
-        </nav>
-    </header>
+<div class="container">
 
-    <main class="container">
-        <h1>Welcome to TRIGGER NALIAN Software Company</h1>
-        <p>Your platform for cutting-edge software solutions and premium support.</p>
-        
-        <div style="margin-top: 30px;">
-            <a href="shop.html" class="btn btn-primary">Explore Our Software</a>
-            <a href="chats.html" class="btn btn-accent" style="margin-left: 15px;">Start a Consultation</a>
+    <div class="header">
+        <div class="brand">
+            <h1>⛽ BASH OILS LTD.</h1>
+            <p>Station Management System</p>
+        </div>
+        <div class="no-print">
+            <button class="btn btn-red" onclick="endShift()">End Shift & Save Meters</button>
+        </div>
+    </div>
+
+    <div class="grid-2">
+        <div class="card">
+            <div class="section-title">
+                <span>Shift Information</span>
+            </div>
+            <div class="grid-2">
+                <div class="input-grp"><label>Date</label><input type="date" id="shift_date"></div>
+                <div class="input-grp"><label>Shift Type</label>
+                    <select id="shift_type"><option>Day Shift</option><option>Night Shift</option></select>
+                </div>
+            </div>
+            <div class="input-grp"><label>Attendant Name</label><input type="text" id="attendant" placeholder="e.g. Sarah J."></div>
         </div>
         
-        </main>
+        <div class="card">
+            <div class="section-title">
+                <span>Current Prices (UGX)</span>
+                <button class="btn btn-blue no-print" id="priceBtn" onclick="togglePrice()">Unlock</button>
+            </div>
+            <div class="grid-2">
+                <div class="input-grp">
+                    <label style="color:var(--pms);">PMS Price (Petrol)</label>
+                    <input type="number" id="price_pms" disabled style="color:var(--pms); font-weight:bold;">
+                </div>
+                <div class="input-grp">
+                    <label style="color:var(--ago);">AGO Price (Diesel)</label>
+                    <input type="number" id="price_ago" disabled style="color:var(--ago); font-weight:bold;">
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <footer class="footer">
-        <p>© 2024 TRIGGER NALIAN SOFTWARE COMPANY. All Rights Reserved.</p>
-    </footer>
+    <div class="card">
+        <div class="section-title">Pump Meter Readings</div>
+        
+        <div class="pump-box" style="margin-bottom: 15px;">
+            <div class="pump-header">⛽ PUMP 1</div>
+            <div class="nozzle-row">
+                <span class="pms-label">PMS</span>
+                <input type="number" id="p1_pms_open" placeholder="Open" class="calc">
+                <input type="number" id="p1_pms_close" placeholder="Close" class="calc">
+                <input type="text" id="p1_pms_lts" disabled placeholder="Lts">
+                <input type="text" id="p1_pms_amt" disabled placeholder="Amount">
+            </div>
+            <div class="nozzle-row">
+                <span class="ago-label">AGO</span>
+                <input type="number" id="p1_ago_open" placeholder="Open" class="calc">
+                <input type="number" id="p1_ago_close" placeholder="Close" class="calc">
+                <input type="text" id="p1_ago_lts" disabled placeholder="Lts">
+                <input type="text" id="p1_ago_amt" disabled placeholder="Amount">
+            </div>
+        </div>
 
-    <script src="data.js"></script>
-    <script src="app.js"></script>
-</body>
-</html>
+        <div class="pump-box">
+            <div class="pump-header">⛽ PUMP 2</div>
+            <div class="nozzle-row">
+                <span class="pms-label">PMS</span>
+                <input type="number" id="p2_pms_open" placeholder="Open" class="calc">
+                <input type="number" id="p2_pms_close" placeholder="Close" class="calc">
+                <input type="text" id="p2_pms_lts" disabled placeholder="Lts">
+                <input type="text" id="p2_pms_amt" disabled placeholder="Amount">
+            </div>
+            <div class="nozzle-row">
+                <span class="ago-label">AGO</span>
+                <input type="number" id="p2_ago_open" placeholder="Open" class="calc">
+                <input type="number" id="p2_ago_close" placeholder="Close" class="calc">
+                <input type="text" id="p2_ago_lts" disabled placeholder="Lts">
+                <input type="text" id="p2_ago_amt" disabled placeholder="Amount">
+            </div>
+        </div>
+    </div>
+
+    <div class="grid-2">
+        <div class="card">
+            <div class="section-title">Expenses / Invoices</div>
+            <div class="grid-2 no-print">
+                <input id="exp_desc" placeholder="Desc">
+                <input id="exp_amt" type="number" placeholder="Amt">
+            </div>
+            <button class="btn btn-add no-print" onclick="addFin('exp')">Add Expense</button>
+            <table id="tbl_exp"></table>
+        </div>
+
+        <div class="card">
+            <div class="section-title">Credit Sales (Debts)</div>
+            <div class="grid-2 no-print">
+                <input id="cred_desc" placeholder="Client">
+                <input id="cred_amt" type="number" placeholder="Amt">
+            </div>
+            <button class="btn btn-add no-print" onclick="addFin('cred')">Add Credit</button>
+            <table id="tbl_cred"></table>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="section-title">Debt Recovery (Cash In)</div>
+        <div class="grid-2 no-print">
+            <input id="rec_desc" placeholder="Client / Date">
+            <input id="rec_amt" type="number" placeholder="Amount Paid">
+        </div>
+        <button class="btn btn-add no-print" onclick="addFin('rec')">Add Payment</button>
+        <table id="tbl_rec"></table>
+    </div>
+
+    <div class="dashboard">
+        <div>
+            <div class="dash-item"><span>Total PMS Sales:</span> <span id="sum_pms">0.00</span></div>
+            <div class="dash-item"><span>Total AGO Sales:</span> <span id="sum_ago">0.00</span></div>
+            <div class="dash-item" style="color:#f1c40f"><span>GROSS SALES:</span> <span id="sum_gross">0.00</span></div>
+            <br>
+            <div class="dash-item"><span>+ Debt Recovery:</span> <span id="sum_rec">0.00</span></div>
+            <div class="dash-item"><span>- Credit Sales:</span> <span id="sum_cred">0.00</span></div>
+            <div class="dash-item"><span>- Expenses:</span> <span id="sum_exp">0.00</span></div>
+        </div>
+        <div style="text-align:right; border-left:1px solid rgba(255,255,255,0.2); padding-left:20px;">
+            <div style="font-size:12px; opacity:0.8;">EXPECTED CASH</div>
+            <div class="dash-total" style="color:white;" id="sum_expected">0.00</div>
+            
+            <div style="margin-top:20px; font-size:12px; opacity:0.8;">ACTUAL CASH COUNT</div>
+            <input type="number" id="actual_cash" placeholder="Enter Cash..." style="background:white; color:black; padding:10px; border-radius:4px; font-size:18px; text-align:right; width:100%;" oninput="calc()">
+            
+            <div style="margin-top:10px;" id="diff_display">
+                Difference: 0.00
+            </div>
+        </div>
+    </div>
+
+    <div class="card no-print" style="margin-top:20px;">
+        <div class="section-title">Generate Reports</div>
+        <div class="report-grid">
+            <button class="report-btn" onclick="window.print()">
+                <span class="report-icon">🖨️</span>
+                <strong>Print Shift Summary</strong><br>
+                <small>PDF / Paper Handover</small>
+            </button>
+            <button class="report-btn" onclick="genReport('sales')">
+                <span class="report-icon">⛽</span>
+                <strong>Export Sales Log</strong><br>
+                <small>CSV (Litres & Revenue)</small>
+            </button>
+            <button class="report-btn" onclick="genReport('finance')">
+                <span class="report-icon">💰</span>
+                <strong>Export Financials</strong><br>
+                <small>CSV (Cash, Debts, Exp)</small>
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // --- DATA STORE ---
+    let data = {
+        prices: {pms:0, ago:0},
+        exp: [], cred: [], rec: []
+    };
+
+    // --- INIT ---
+    window.onload = () => {
+        // Load Price
+        let savedPrices = JSON.parse(localStorage.getItem('bash_prices')) || {pms:0, ago:0};
+        data.prices = savedPrices;
+        document.getElementById('price_pms').value = savedPrices.pms;
+        document.getElementById('price_ago').value = savedPrices.ago;
+        document.getElementById('shift_date').valueAsDate = new Date();
+
+        // Load Last Shift Meters (Auto-fill Openings)
+        let lastMeters = JSON.parse(localStorage.getItem('bash_meters'));
+        if(lastMeters) {
+            ['p1_pms','p1_ago','p2_pms','p2_ago'].forEach(k => {
+                document.getElementById(k+'_open').value = lastMeters[k] || '';
+            });
+        }
+    };
+
+    // --- LOGIC ---
+    function togglePrice() {
+        let elPms = document.getElementById('price_pms');
+        let elAgo = document.getElementById('price_ago');
+        let btn = document.getElementById('priceBtn');
+        
+        if(elPms.disabled) {
+            elPms.disabled = false; elAgo.disabled = false;
+            btn.textContent = "Save"; btn.className = "btn btn-green no-print";
+        } else {
+            data.prices.pms = parseFloat(elPms.value)||0;
+            data.prices.ago = parseFloat(elAgo.value)||0;
+            localStorage.setItem('bash_prices', JSON.stringify(data.prices));
+            elPms.disabled = true; elAgo.disabled = true;
+            btn.textContent = "Unlock"; btn.className = "btn btn-blue no-print";
+            calc();
+        }
+    }
+
+    // Event Listeners for Calculation
+    document.querySelectorAll('.calc').forEach(i => i.addEventListener('input', calc));
+
+    function calc() {
+        let grandPms = 0, grandAgo = 0;
+
+        // Helper to process nozzle
+        function processNozzle(prefix, price) {
+            let o = parseFloat(document.getElementById(prefix+'_open').value)||0;
+            let c = parseFloat(document.getElementById(prefix+'_close').value)||0;
+            let lts = (c > o) ? (c - o) : 0;
+            let amt = lts * price;
+            
+            document.getElementById(prefix+'_lts').value = lts.toFixed(2);
+            document.getElementById(prefix+'_amt').value = amt.toLocaleString();
+            return amt;
+        }
+
+        // Run nozzles
+        grandPms += processNozzle('p1_pms', data.prices.pms);
+        grandAgo += processNozzle('p1_ago', data.prices.ago);
+        grandPms += processNozzle('p2_pms', data.prices.pms);
+        grandAgo += processNozzle('p2_ago', data.prices.ago);
+
+        // Financials
+        let totExp = data.exp.reduce((a,b)=>a+b.amt,0);
+        let totCred = data.cred.reduce((a,b)=>a+b.amt,0);
+        let totRec = data.rec.reduce((a,b)=>a+b.amt,0);
+
+        let gross = grandPms + grandAgo;
+        let expected = gross + totRec - totCred - totExp;
+
+        // UI Updates
+        document.getElementById('sum_pms').textContent = grandPms.toLocaleString();
+        document.getElementById('sum_ago').textContent = grandAgo.toLocaleString();
+        document.getElementById('sum_gross').textContent = gross.toLocaleString();
+        document.getElementById('sum_exp').textContent = totExp.toLocaleString();
+        document.getElementById('sum_cred').textContent = totCred.toLocaleString();
+        document.getElementById('sum_rec').textContent = totRec.toLocaleString();
+        document.getElementById('sum_expected').textContent = expected.toLocaleString();
+
+        // Difference
+        let actual = parseFloat(document.getElementById('actual_cash').value)||0;
+        let diff = actual - expected;
+        let diffEl = document.getElementById('diff_display');
+        diffEl.innerHTML = `Difference: ${diff.toLocaleString()} <span class="${diff<0?'status-short':diff>0?'status-over':'status-ok'}">
+            ${diff<0?'(SHORT)':diff>0?'(OVER)':'(BALANCED)'}</span>`;
+    }
+
+    // --- LIST MANAGERS ---
+    function addFin(type) {
+        let descId = type==='rec' ? 'rec_desc' : (type==='exp'?'exp_desc':'cred_desc');
+        let amtId = type==='rec' ? 'rec_amt' : (type==='exp'?'exp_amt':'cred_amt');
+        let d = document.getElementById(descId).value;
+        let a = parseFloat(document.getElementById(amtId).value);
+        
+        if(d && a) {
+            data[type].push({desc:d, amt:a});
+            document.getElementById(descId).value='';
+            document.getElementById(amtId).value='';
+            renderTables(); calc();
+        }
+    }
+
+    function renderTables() {
+        const row = (item, type, idx) => `<tr><td>${item.desc}</td><td>${item.amt.toLocaleString()}</td><td class="no-print"><span onclick="delItem('${type}',${idx})" style="color:red;cursor:pointer;">×</span></td></tr>`;
+        document.getElementById('tbl_exp').innerHTML = data.exp.map((i,x)=>row(i,'exp',x)).join('');
+        document.getElementById('tbl_cred').innerHTML = data.cred.map((i,x)=>row(i,'cred',x)).join('');
+        document.getElementById('tbl_rec').innerHTML = data.rec.map((i,x)=>row(i,'rec',x)).join('');
+    }
+
+    function delItem(type, idx) {
+        data[type].splice(idx,1);
+        renderTables(); calc();
+    }
+
+    // --- SAVE / END SHIFT ---
+    function endShift() {
+        if(!confirm("End Shift? This will save Closing Meters as the next Opening Meters.")) return;
+        
+        let meters = {
+            p1_pms: document.getElementById('p1_pms_close').value,
+            p1_ago: document.getElementById('p1_ago_close').value,
+            p2_pms: document.getElementById('p2_pms_close').value,
+            p2_ago: document.getElementById('p2_ago_close').value
+        };
+        localStorage.setItem('bash_meters', JSON.stringify(meters));
+        location.reload();
+    }
+
+    // --- REPORT GENERATOR ---
+    function genReport(type) {
+        let date = document.getElementById('shift_date').value;
+        let shift = document.getElementById('shift_type').value;
+        let rows = [];
+        let filename = "";
+
+        if(type === 'sales') {
+            filename = `BASH_Sales_Report_${date}.csv`;
+            rows.push(["PUMP SALES REPORT", date, shift]);
+            rows.push(["PUMP", "NOZZLE", "OPEN", "CLOSE", "LITRES", "AMOUNT"]);
+            
+            ['p1_pms','p1_ago','p2_pms','p2_ago'].forEach(id => {
+                let open = document.getElementById(id+'_open').value;
+                let close = document.getElementById(id+'_close').value;
+                let lts = document.getElementById(id+'_lts').value;
+                let amt = document.getElementById(id+'_amt').value;
+                let pump = id.startsWith('p1') ? 'Pump 1' : 'Pump 2';
+                let prod = id.includes('pms') ? 'PMS' : 'AGO';
+                rows.push([pump, prod, open, close, lts, amt.replace(/,/g,'')]);
+            });
+        } 
+        else if(type === 'finance') {
+            filename = `BASH_Financial_Report_${date}.csv`;
+            rows.push(["FINANCIAL RECONCILIATION", date, shift]);
+            rows.push([]);
+            rows.push(["CATEGORY", "DESCRIPTION", "AMOUNT"]);
+            
+            // Add items
+            data.exp.forEach(i => rows.push(["Expense", i.desc, i.amt]));
+            data.cred.forEach(i => rows.push(["Credit Sale", i.desc, i.amt]));
+            data.rec.forEach(i => rows.push(["Debt Recovered", i.desc, i.amt]));
+            
+            rows.push([]);
+            rows.push(["Expec
